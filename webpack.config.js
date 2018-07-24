@@ -218,7 +218,7 @@ module.exports = function(env) {
           },
         },
       },
-      minimizer: isProd
+      minimizer: !isProd
         ? [
             new UglifyJSPlugin({
               parallel: true,
