@@ -17,6 +17,7 @@ function replaceReducers(defaultReducers) {
 }
 
 export function injectAsyncReducers(asyncReducers) {
+  debugger;
   const injectReducers = Object.keys(asyncReducers).reduce((all, item) => {
     if (store.asyncReducers[item]) {
       delete all[item]; // eslint-disable-line

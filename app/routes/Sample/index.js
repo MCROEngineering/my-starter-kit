@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Chunk from 'components/Chunk';
 
-const loadSampleContainer = () => import('containers/Sample' /* webpackChunkName: "sample" */);
+const loadSampleContainer = () => {
+  debugger;
+  return import('containers/Sample' /* webpackChunkName: "sample" */)
+};
 
 export default class Sample extends Component {
   render() {
