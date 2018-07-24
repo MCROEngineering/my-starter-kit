@@ -11,7 +11,7 @@
     "coverage": "jest --coverage",
     "start": "webpack-dev-server",
     "prod": "cross-env NODE_ENV=production webpack-dev-server --env.prod=true",
-    "build": "rimraf build && cross-env NODE_ENV=production webpack --env.prod=true --env.sw=false",
+    "build": "rimraf build && cross-env NODE_ENV=production webpack --env.prod=true --env.sw=true",
     "serve": "pushstate-server build/ 3000",
     "perf": "rimraf *.report.dom.html && npm run build && (npm run serve & lighthouse http://localhost:3000 --view)",
     "lint": "eslint ./app -f table",

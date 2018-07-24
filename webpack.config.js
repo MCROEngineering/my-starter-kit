@@ -94,7 +94,6 @@ module.exports = function(env) {
         {
           loader: 'css-loader',
           options: {
-            module: true,
             modules: true,
             importLoaders: 1,
             localIdentName: '[hash:base64:5]',
@@ -218,7 +217,7 @@ module.exports = function(env) {
           },
         },
       },
-      minimizer: !isProd
+      minimizer: isProd
         ? [
             new UglifyJSPlugin({
               parallel: true,
