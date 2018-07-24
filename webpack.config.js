@@ -78,6 +78,7 @@ module.exports = function(env) {
   ];
 
   if (isProd) {
+    plugins.push(CopyWebpackPlugin([path.resolve(__dirname, './public', '404.html')]));
     plugins.push(new ExtractTextPlugin('style-[md5:contenthash:hex:20].css'));
 
     cssLoader = ExtractTextPlugin.extract({
@@ -165,7 +166,7 @@ module.exports = function(env) {
   if (serviceWorkerBuild) {
     plugins.push(
       new SWPrecacheWebpackPlugin({
-        cacheId: 'budgeting-app',
+        cacheId: 'my-starter-kit',
         filename: 'sw.js',
         maximumFileSizeToCacheInBytes: 800000,
         mergeStaticsConfig: true,
