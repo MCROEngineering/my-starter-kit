@@ -103,6 +103,12 @@ module.exports = function(env) {
           loader: 'postcss-loader',
           options: {
             sourceMap: true,
+            plugins: function () { // post css plugins, can be exported to postcss.config.js
+              return [
+                require('precss'),
+                require('autoprefixer')
+              ];
+            }
           },
         },
         {
@@ -183,12 +189,12 @@ module.exports = function(env) {
   const entryPoint = isProd
     ? ['@babel/polyfill', './index.js']
     : [
-        '@babel/polyfill',
-        'react-hot-loader/patch',
-        `webpack-dev-server/client?http://${host}:${port}`,
-        'webpack/hot/only-dev-server',
-        './index.js',
-      ];
+      '@babel/polyfill',
+      'react-hot-loader/patch',
+      `webpack-dev-server/client?http://${host}:${port}`,
+      'webpack/hot/only-dev-server',
+      './index.js',
+    ];
 
   return {
     devtool: isProd ? 'cheap-source-map' : 'eval-cheap-module-source-map',
@@ -219,24 +225,24 @@ module.exports = function(env) {
       },
       minimizer: isProd
         ? [
-            new UglifyJSPlugin({
-              parallel: true,
-              uglifyOptions: {
-                compress: {
-                  warnings: false,
-                  ie8: false,
-                  conditionals: true,
-                  unused: true,
-                  comparisons: true,
-                  sequences: true,
-                  dead_code: true,
-                  evaluate: true,
-                  if_return: true,
-                  join_vars: true,
-                },
+          new UglifyJSPlugin({
+            parallel: true,
+            uglifyOptions: {
+              compress: {
+                warnings: false,
+                ie8: false,
+                conditionals: true,
+                unused: true,
+                comparisons: true,
+                sequences: true,
+                dead_code: true,
+                evaluate: true,
+                if_return: true,
+                join_vars: true,
               },
-            }),
-          ]
+            },
+          }),
+        ]
         : [],
     },
     output: {
@@ -249,8 +255,8 @@ module.exports = function(env) {
     module: {
       rules: [
         {
-          test: /\.(html|svg|jpe?g|png|ttf|woff2?)$/,
-          include: sourcePath,
+          test: /\.(html|svg|jpe?g|png|ttf|eot|woff2?)$/,
+          include: [sourcePath, path.resolve(__dirname, './node_modules/bootstrap/dist/'), path.resolve(__dirname, './node_modules/font-awesome/fonts/') ],
           use: {
             loader: 'file-loader',
             options: {
@@ -263,6 +269,27 @@ module.exports = function(env) {
           include: sourcePath,
           use: cssLoader,
         },
+        {
+          test: /\.css$/,
+          include: path.resolve(__dirname, './node_modules/bootstrap/dist/css/'),
+          use: isProd
+            ? ExtractTextPlugin.extract({
+              fallback: 'style-loader', // eslint-disable-line indent
+              use: ['css-loader', 'postcss-loader'], // eslint-disable-line indent
+            }) // eslint-disable-line indent
+            : ['style-loader', 'css-loader', 'postcss-loader'],
+        },
+        {
+          test: /\.css$/,
+          include: path.resolve(__dirname, './node_modules/font-awesome/css/'),
+          use: isProd
+            ? ExtractTextPlugin.extract({
+              fallback: 'style-loader', // eslint-disable-line indent
+              use: ['css-loader', 'postcss-loader'], // eslint-disable-line indent
+            }) // eslint-disable-line indent
+            : ['style-loader', 'css-loader', 'postcss-loader'],
+        },
+
         {
           test: /\.(js|jsx)$/,
           include: sourcePath,
